@@ -50,7 +50,8 @@ def train_model(resume=False):
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5, factor=0.5)
     scaler = torch.amp.GradScaler('cuda')
     criterion = nn.CrossEntropyLoss()
-    # _ , le = export_to_ffcv("cifar/train", "cifar/trainLabels.csv", num)
+    # tạo ra train.beton và test.beton ( chỉ tạo ra trong 1 lần )
+    _ , le = export_to_ffcv("cifar/train", "cifar/trainLabels.csv", num)
     train_loader, test_loader = dealwith(128)
 
     for epoch in range(epochs):
