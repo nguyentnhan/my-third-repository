@@ -36,7 +36,7 @@ def get_model(device):
         # Kiểm tra NaN trong trọng số
         for name, param in model.named_parameters():
             if torch.isnan(param).any():
-                print(f"⚠️ CẢNH BÁO: Trọng số lớp {name} chứa NaN!")
+                print(f"CẢNH BÁO: Trọng số lớp {name} chứa NaN!")
     return model
 
 def train_model(resume=False):
@@ -72,7 +72,7 @@ def train_model(resume=False):
                 loss = criterion(outputs, labels)
 
             if torch.isnan(loss):
-                print(f"❌ Phát hiện NaN tại batch {i}! Dừng huấn luyện.")
+                print(f" Phát hiện NaN tại batch {i}! Dừng huấn luyện.")
                 return
             
             # scaler.scale(loss).backward()
@@ -130,10 +130,10 @@ def evaluate(model, loader, device):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
     if total == 0:
-        print("⚠️ Cảnh báo: test_loader không trả về bất kỳ dữ liệu nào! Kiểm tra lại kích thước batch_size.")
+        print(" Cảnh báo: test_loader không trả về bất kỳ dữ liệu nào! Kiểm tra lại kích thước batch_size.")
         return 0.0
     accuracy = 100 * correct / total
-    print(f"🎯 Accuracy: {accuracy:.2f}%")
+    print(f" Accuracy: {accuracy:.2f}%")
     # has_zero = (outputs == 0).any()
     # print(f"Có giá trị 0 trong output không? {has_zero.item()}")
     return accuracy, outputs
@@ -142,7 +142,7 @@ def use_model(loader):
     """Hàm dùng để dự đoán dữ liệu mới (Sử dụng trọng số đã lưu)"""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = get_model(device)
-    print("🔮 Đang dự đoán dữ liệu...")
+    print(" Đang dự đoán dữ liệu...")
     evaluate(model, loader, device)
 
 def predict():
