@@ -158,16 +158,3 @@ if __name__ == "__main__":
     # use_model(train_loader)
     # Chạy huấn luyện
     train_model(resume=False)
-
-# việc sử dụng scaler đã khiến mô hình mắc phải loss NaN ( hoặc cũng có thể do lr cao nữa (0.001))
-# vì sgd ko điều chỉnh lr nên nó dễ nhảy qua hố sang mức loss cao hơn bên kia.
-# tôi sẽ thử nâng lr lên 0.001 trong 50 epoch tiếp
-# với learning rate đầu bằng 0.008, khi chạy mô hình lại lần nữa
-# thì lr sẽ được reset lại và tăng mạnh
-# lỗi Kịch bản : "Vòng xoáy tử thần" (The Death Spiral) vòng lặp phản hồi dương (positive feedback loop)
-# việc tăng trọng số tức thì sẽ đồng thời tăng bước nhảy của tất cả trọng số, 
-# khiến cho loss lại tăng nữa, khiến cho tất cả trọng số lại tăng mạnh đồng thời tiếp, 
-# và trước khi scheduler giảm lr về mức ổn thì grad đã bùng nổ.
-# dù đã giảm lr = 0.000008 nhưng vẫn bị NaN loss có thể là vì:
-# NaN lúc này không phải do mô hình "ngu đi", mà do nó "quá tự tin" dẫn đến các con số vượt quá khả năng lưu trữ của kiểu dữ liệu bạn đang dùng
-# kết quả sau 100 - 50 - vài epoch (2 lần chạy) -> 96% test, 96% train
